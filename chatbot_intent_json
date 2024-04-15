@@ -1,0 +1,55 @@
+import json
+
+print("hej jeg er en chatbot")
+
+
+hensigt = {
+    ("hej","godmorgen","godaften","goddag", "Hallo", "hello") : "Hilsen", 
+    ("åbningstider","åbent","åbent?","lukket","lukker","klokken","kl","åbner","tid") : "Åbningstider"
+    
+    }
+
+
+
+
+
+svarFil = open('svar.json')
+
+respons = json.load(svarFil)
+
+
+# returnere en value der hører til searchkey i en dictionary w
+def getValue(searchkey, w):
+    # Vi løber igennem alle key-lister i w. hvis vi finder searchkey er i en keyliste returneres den value, der hører til den keyliste
+    for keyList in w.keys():
+        if searchkey in keyList:
+            return w[keyList]
+    return None
+
+
+
+while(True) :
+    foresporgsel = ""
+    svar = ""
+    found = False
+    message = input().lower()
+    wordsInMessage = message.split()
+    hensigten = ""
+   
+
+    """Vi tager hvert ord i beskeden og tjekker om ordet er i en af vores key-lister i hensigt."""
+    for word in wordsInMessage:
+        for key in hensigt.keys():
+            if word in key:
+                found = True
+                hensigten = getValue(word,hensigt)
+                
+            
+    if found:
+            #foresporgsel = getValue(word,hensigt)
+            svar = respons.get(hensigten)
+            print(svar)
+    elif message == "stop" :
+                break
+    else :
+            print("Jeg forstår ikke hvad du mener")
